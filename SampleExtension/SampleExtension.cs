@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -171,15 +172,29 @@ namespace Codice.Client.IssueTracker.SampleExtension
         {
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create(targetUri);
 
-            using (HttpWebResponse resp = (HttpWebResponse)req.GetResponse())
-            using (StreamReader reader = new StreamReader(resp.GetResponseStream()))
+            try
             {
-                return reader.ReadToEnd();
+                using (HttpWebResponse resp = (HttpWebResponse)req.GetResponse())
+                using (StreamReader reader = new StreamReader(resp.GetResponseStream()))
+                {
+                    return reader.ReadToEnd();
+                }
+            }
+            catch(Exception e)
+            {
+                mLog.ErrorFormat(
+                    "Unable to perform request on URI {0}: {1}", targetUri, e.Message);
+                mLog.DebugFormat(
+                    "Stack trace:{0}{1}", Environment.NewLine, e.StackTrace);
+                return string.Empty;
             }
         }
 
         PlasticTask BuildTaskFromJson(MyServiceData jsonData)
         {
+            if (jsonData == null)
+                return null;
+
             return new PlasticTask()
             {
                 Id = jsonData.Id.ToString(),
