@@ -11,23 +11,20 @@ namespace Codice.Client.IssueTracker.SampleExtension
             List<IssueTrackerConfigurationParameter> parameters
                 = new List<IssueTrackerConfigurationParameter>();
 
-            ExtensionWorkingMode workingMode = storedConfiguration.WorkingMode;
-            if (workingMode == ExtensionWorkingMode.None)
-                workingMode = ExtensionWorkingMode.TaskOnBranch;
+            ExtensionWorkingMode workingMode = GetWorkingMode(storedConfiguration);
 
-            string user = storedConfiguration.GetValue(SampleExtension.USER_KEY);
-            if (string.IsNullOrEmpty(user))
-                user = "1";
+            string user = GetValidParameterValue(
+                storedConfiguration, SampleExtension.USER_KEY, "1");
 
-            string prefix = storedConfiguration.GetValue(SampleExtension.BRANCH_PREFIX_KEY);
-            if (string.IsNullOrEmpty(prefix))
-                prefix = "scm";
+            string prefix = GetValidParameterValue(
+                storedConfiguration, SampleExtension.BRANCH_PREFIX_KEY, "scm");
 
             IssueTrackerConfigurationParameter userIdParam =
                 new IssueTrackerConfigurationParameter()
             {
                 Name = SampleExtension.USER_KEY,
-                Value = user,
+                Value = GetValidParameterValue(
+                    storedConfiguration, SampleExtension.USER_KEY, "1"),
                 Type = IssueTrackerConfigurationParameterType.User,
                 IsGlobal = false
             };
@@ -35,11 +32,15 @@ namespace Codice.Client.IssueTracker.SampleExtension
             IssueTrackerConfigurationParameter branchPrefixParam =
                 new IssueTrackerConfigurationParameter()
             {
-                Name = SampleExtension.USER_KEY,
-                Value = storedConfiguration.GetValue(SampleExtension.USER_KEY),
-                Type = IssueTrackerConfigurationParameterType.User,
-                IsGlobal = false
+                Name = SampleExtension.BRANCH_PREFIX_KEY,
+                Value = GetValidParameterValue(
+                    storedConfiguration, SampleExtension.BRANCH_PREFIX_KEY, "scm"),
+                Type = IssueTrackerConfigurationParameterType.BranchPrefix,
+                IsGlobal = true
             };
+
+            parameters.Add(userIdParam);
+            parameters.Add(branchPrefixParam);
 
             return new IssueTrackerConfiguration(workingMode, parameters);
         }
@@ -53,6 +54,26 @@ namespace Codice.Client.IssueTracker.SampleExtension
         public string GetIssueTrackerName()
         {
             return "Sample extension";
+        }
+
+        ExtensionWorkingMode GetWorkingMode(IssueTrackerConfiguration config)
+        {
+            if (config == null)
+                return ExtensionWorkingMode.TaskOnBranch;
+
+            if (config.WorkingMode == ExtensionWorkingMode.None)
+                return ExtensionWorkingMode.TaskOnBranch;
+
+            return config.WorkingMode;
+        }
+
+        string GetValidParameterValue(
+            IssueTrackerConfiguration config, string paramName, string defaultValue)
+        {
+            string configValue = (config != null) ? config.GetValue(paramName) : null;
+            if (string.IsNullOrEmpty(configValue))
+                return defaultValue;
+            return configValue;
         }
     }
 }
