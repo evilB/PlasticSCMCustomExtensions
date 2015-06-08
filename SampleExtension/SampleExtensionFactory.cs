@@ -53,7 +53,7 @@ namespace Codice.Client.IssueTracker.SampleExtension
 
         public string GetIssueTrackerName()
         {
-            return "Sample extension";
+            return "Sample Issue Tracker";
         }
 
         ExtensionWorkingMode GetWorkingMode(IssueTrackerConfiguration config)
