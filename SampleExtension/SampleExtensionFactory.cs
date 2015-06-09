@@ -34,7 +34,7 @@ namespace Codice.Client.IssueTracker.SampleExtension
             {
                 Name = SampleExtension.BRANCH_PREFIX_KEY,
                 Value = GetValidParameterValue(
-                    storedConfiguration, SampleExtension.BRANCH_PREFIX_KEY, "scm"),
+                    storedConfiguration, SampleExtension.BRANCH_PREFIX_KEY, "sample"),
                 Type = IssueTrackerConfigurationParameterType.BranchPrefix,
                 IsGlobal = true
             };
