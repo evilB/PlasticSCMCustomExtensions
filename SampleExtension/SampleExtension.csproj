@@ -7,7 +7,7 @@
     <ProjectGuid>{9787E7AA-94A7-44B4-89EE-1D3EA5FE330A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SampleExtension</RootNamespace>
+    <RootNamespace>Codice.Client.IssueTracker.SampleExtension</RootNamespace>
     <AssemblyName>SampleExtension</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -35,14 +35,11 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Codice.I3">
-      <HintPath>..\..\..\..\..\..\Program Files\PlasticSCM5\client\Codice.I3.dll</HintPath>
-    </Reference>
-    <Reference Include="extensioncommon">
-      <HintPath>..\..\..\..\..\..\Program Files\PlasticSCM5\client\extensioncommon.dll</HintPath>
+    <Reference Include="issuetrackerinterface">
+      <HintPath>C:\Program Files\PlasticSCM4\client\issuetrackerinterface.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\..\..\..\..\..\Program Files\PlasticSCM5\client\log4net.dll</HintPath>
+      <HintPath>C:\Program Files\PlasticSCM4\client\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -56,6 +53,7 @@
     <Compile Include="Model\MyServiceData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SampleExtension.cs" />
+    <Compile Include="SampleExtensionFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

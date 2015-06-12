@@ -1,9 +1,6 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace SampleExtension.Model
+namespace Codice.Client.IssueTracker.SampleExtension.Model
 {
     public class MyServiceData
     {
