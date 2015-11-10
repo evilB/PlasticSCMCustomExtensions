@@ -94,12 +94,11 @@ namespace Codice.Client.IssueTracker.YouTrackExtension
 			string projectFilter =  mConfig.BranchPrefix.Substring(0, mConfig.BranchPrefix.Length - 1);
 
 
-			var filters = mConfig.IssueTypes.Select(type => string.Format("filter={0}#{1}+#{2}+#{3}", userFilter, type,stateFilter , projectFilter));
-
+			var filters = mConfig.IssueTypes.Select(type => "filter=" + string.Format("{0}%23{1}+%23{2}+%23{3}", userFilter, type,stateFilter , projectFilter)).ToList();
 
 			int maxIssues = 10000;
 			
-			var url =string.Format("{0}/rest/issue?{1}&max={2}", mConfig.BaseURL,  Uri.EscapeDataString(string.Join("&",filters)), maxIssues);
+			var url =string.Format("{0}/rest/issue?{1}&max={2}", mConfig.BaseURL,  string.Join("&",filters), maxIssues);
 
 			var xml = ConnectToYoutrack(url);
 			return BuildTasksFromXML(xml);
@@ -336,6 +335,9 @@ namespace Codice.Client.IssueTracker.YouTrackExtension
 		private string ConnectToYoutrack(string requestURL, string method = "GET")
 		{
 			{
+				if(_authData == null)
+					Connect();
+
 				using (var client = new WebClient())
 				{
 					client.Headers.Add("Cookie", _authData);

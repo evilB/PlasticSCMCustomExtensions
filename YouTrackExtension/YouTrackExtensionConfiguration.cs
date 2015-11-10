@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Codice.Utils;
 
 namespace Codice.Client.IssueTracker.YouTrackExtension
 {
@@ -27,7 +28,7 @@ namespace Codice.Client.IssueTracker.YouTrackExtension
 		private const IssueTrackerConfigurationParameterType UserType = IssueTrackerConfigurationParameterType.User;
 		private const string PasswordKey = "Password";
 		private const string PasswordDefault = "password";
-		private const IssueTrackerConfigurationParameterType PasswordType = IssueTrackerConfigurationParameterType.Text;
+		private const IssueTrackerConfigurationParameterType PasswordType = IssueTrackerConfigurationParameterType.Password;
 		private const string BranchPrefixKey = "Branch prefix";
 		private const string BranchPrefixDefault = "yt-";
 		private const IssueTrackerConfigurationParameterType BranchPrefixType = IssueTrackerConfigurationParameterType.Text;
@@ -112,11 +113,14 @@ namespace Codice.Client.IssueTracker.YouTrackExtension
 			}
 		}
 
+
 		public string Password
 		{
 			get
 			{
-				return GetValidParameterValue(storedConfiguration, PasswordKey, PasswordDefault);
+				var encryptedPassword =  GetValidParameterValue(storedConfiguration, PasswordKey, PasswordDefault);
+				var decryptedPassword = CryptoServices.GetDecryptedPassword(encryptedPassword);
+				return decryptedPassword;
 			}
 		}
 
@@ -124,6 +128,8 @@ namespace Codice.Client.IssueTracker.YouTrackExtension
 		{
 			get
 			{
+
+
 				return GetValidParameterValue(storedConfiguration, BranchPrefixKey, BranchPrefixDefault);
 			}
 		}
